@@ -387,6 +387,132 @@
             color: var(--accent);
         }
 
+        /* Product section */
+        .product-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 3rem 0;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .product-badge {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: #fbbf24;
+            background: rgba(251, 191, 36, 0.15);
+            padding: 0.375rem 0.75rem;
+            border-radius: 100px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .product-section h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-section .subheadline {
+            font-size: 1.125rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .product-section .description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .product-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .product-feature svg {
+            width: 18px;
+            height: 18px;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-price .price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .product-price .price-note {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .btn-buy {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: var(--font-display);
+            background: linear-gradient(135deg, var(--accent) 0%, #00ffcc 100%);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .btn-buy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+
+        .btn-buy svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .privacy-note {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.813rem;
+            color: var(--text-muted);
+        }
+
+        .privacy-note svg {
+            width: 16px;
+            height: 16px;
+            color: var(--accent);
+        }
+
         /* Social proof / About */
         .about-section {
             text-align: center;
@@ -582,6 +708,14 @@
             .radio-item {
                 width: 100%;
             }
+
+            .product-section {
+                padding: 1.5rem;
+            }
+
+            .product-features {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -614,6 +748,59 @@
                     <ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert"></ul>
                 </form>
                 <p class="form-note">Join <span id="reader-count">2,132</span>+ readers. Unsubscribe anytime.</p>
+            </div>
+        </section>
+
+        <section class="product-section">
+            <span class="product-badge">New Tool</span>
+            <h2>Expense Analyzer</h2>
+            <p class="subheadline">See exactly where your money goes — in seconds</p>
+            <p class="description">Upload your expense data (CSV or Excel), get instant spending breakdowns by category with visual charts. 100% private — all processing happens in your browser, no data is uploaded or stored anywhere.</p>
+            
+            <div class="product-features">
+                <div class="product-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                    </svg>
+                    <span>Auto-categorizes expenses</span>
+                </div>
+                <div class="product-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    <span>Visual charts & insights</span>
+                </div>
+                <div class="product-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span>Works with any CSV/Excel</span>
+                </div>
+                <div class="product-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    <span>100% private — no data leaves your device</span>
+                </div>
+            </div>
+
+            <div class="product-price">
+                <span class="price">$14.99</span>
+                <span class="price-note">Launch price</span>
+            </div>
+
+            <a href="https://itsrodm.lemonsqueezy.com/buy/a90d89da-877f-4174-bc3e-6c699fadecc2" class="btn-buy" target="_blank" rel="noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                Get Instant Access
+            </a>
+
+            <div class="privacy-note">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span>Secure checkout via LemonSqueezy</span>
             </div>
         </section>
 
