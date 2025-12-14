@@ -890,17 +890,149 @@
         let categoryChart = null;
         let monthlyChart = null;
 
-        // Category rules for auto-categorization
+        // Expanded category rules for auto-categorization (order matters - more specific first)
         const categoryRules = {
-            'Groceries': ['grocery', 'supermarket', 'walmart', 'costco', 'superstore', 'loblaws', 'metro', 'food basics', 'no frills', 'freshco', 'sobeys', 'safeway', 'whole foods', 'trader joe', 'kroger', 'aldi', 'publix', 'wegmans', 'food lion', 'giant', 'market', 'fresh'],
-            'Dining': ['restaurant', 'mcdonald', 'tim horton', 'tims', 'starbucks', 'uber eats', 'doordash', 'skip', 'skipthedishes', 'cafe', 'coffee', 'burger', 'pizza', 'grubhub', 'chipotle', 'subway', 'taco', 'wendy', 'chick-fil-a', 'dunkin', 'panera', 'dining', 'eat', 'kitchen', 'grill', 'bar ', 'pub ', 'a&w', 'harveys', 'swiss chalet', 'boston pizza'],
-            'Transport': ['gas', 'shell', 'esso', 'petro', 'petro-canada', 'pioneer', 'mobil', 'chevron', 'uber', 'lyft', 'taxi', 'parking', 'toll', 'transit', 'ttc', 'presto', 'go transit', 'bus', 'train', 'airline', 'flight', 'air canada', 'westjet', 'car wash', 'fuel'],
-            'Shopping': ['amazon', 'best buy', 'walmart', 'target', 'ebay', 'etsy', 'shop', 'store', 'mall', 'outlet', 'apple store', 'nike', 'adidas', 'clothing', 'apparel', 'fashion', 'nordstrom', 'winners', 'marshalls', 'home depot', 'lowes', 'ikea', 'canadian tire', 'hudson bay', 'indigo'],
-            'Entertainment': ['netflix', 'spotify', 'disney', 'apple music', 'crave', 'amazon prime', 'youtube', 'hbo', 'movie', 'cinema', 'cineplex', 'theater', 'concert', 'ticket', 'game', 'steam', 'playstation', 'xbox', 'nintendo', 'subscription', 'membership', 'gym', 'fitness', 'goodlife'],
-            'Utilities': ['hydro', 'electric', 'water', 'internet', 'rogers', 'bell', 'telus', 'fido', 'koodo', 'virgin', 'freedom', 'phone', 'mobile', 'utility', 'bill', 'enbridge', 'gas bill', 'insurance', 'rent', 'mortgage'],
-            'Income': ['payroll', 'deposit', 'salary', 'transfer in', 'direct dep', 'income', 'dividend', 'interest', 'refund', 'cashback', 'rebate', 'payment from'],
-            'Transfer': ['transfer', 'e-transfer', 'etransfer', 'interac', 'xfer', 'payment to', 'zelle', 'venmo', 'paypal', 'wire', 'ach']
+            'Income': [
+                'payroll', 'salary', 'deposit', 'direct deposit', 'dir dep', 'eft deposit', 'pay from', 'wage', 'income',
+                'tax refund', 'tax return', 'cra', 'canada revenue', 'gst credit', 'hst credit', 'trillium',
+                'cerb', 'ei payment', 'cpp', 'oas', 'gis', 'child benefit', 'ccb', 'uccb',
+                'e-transfer from', 'etransfer from', 'interac from', 'refund', 'reimbursement', 'cashback',
+                'dividend', 'interest earned', 'investment income'
+            ],
+            'Transfer': [
+                'transfer', 'tfr', 'trf', 'e-transfer', 'etransfer', 'interac', 'emt', 'send money',
+                'payment to', 'payment from', 'paypal', 'wise', 'transferwise', 'remitly', 'xoom',
+                'western union', 'money order', 'wire transfer', 'eft', 'preauthorized', 'pre-authorized',
+                'pap', 'pac', 'automatic payment', 'autopay', 'auto pay', 'recurring',
+                'loan payment', 'credit card payment', 'cc payment', 'mortgage payment',
+                'line of credit', 'loc payment'
+            ],
+            'Housing': [
+                'rent', 'lease', 'landlord', 'property management', 'rental payment', 'mortgage', 'cmhc',
+                'property tax', 'condo fee', 'strata', 'hoa', 'maintenance fee', 'home repair',
+                'plumber', 'electrician', 'hvac', 'contractor', 'renovation', 'moving', 'movers',
+                'storage unit', 'self storage'
+            ],
+            'Health': [
+                'pharmacy', 'prescription', 'rx', 'medical', 'doctor', 'dr.', 'physician', 'clinic', 'hospital',
+                'dental', 'dentist', 'orthodont', 'optometrist', 'optician', 'glasses', 'contacts',
+                'lenscrafters', 'clearly', 'vision', 'chiropract', 'physiotherapy', 'physio',
+                'massage therapy', 'rmt', 'mental health', 'therapy', 'counseling', 'psychologist', 'psychiatrist',
+                'gym', 'fitness', 'goodlife', 'la fitness', 'anytime fitness', 'planet fitness',
+                'ymca', 'ywca', 'yoga', 'pilates', 'peloton', 'fitbit', 'apple watch', 'health'
+            ],
+            'Groceries': [
+                'walmart', 'costco', 'superstore', 'loblaws', 'loblaw', 'metro', 'grocery', 'food basics', 'foodbasics',
+                'no frills', 'nofrills', 'sobeys', 'safeway', 'save on', 'saveon', 'freshco',
+                'farm boy', 'farmboy', 'whole foods', 'wholefoods', 't&t', 'tntsupermarket',
+                'longos', 'fortinos', 'zehrs', 'valu-mart', 'valumart', 'independent grocer',
+                'your independent', 'real canadian superstore', 'rcss', 'instacart', 'voila',
+                'grocery gateway', 'pcexpress'
+            ],
+            'Dining': [
+                'restaurant', 'mcdonald', 'mcdonalds', 'tim horton', 'timhorton', 'tims', 'starbucks', 'sbux',
+                'uber eat', 'ubereats', 'doordash', 'door dash', 'skip the dish', 'skipthedishes',
+                'grubhub', 'postmates', 'ritual', 'pizza', 'subway', 'wendys', "wendy's",
+                'burger king', 'bk #', 'popeyes', 'chick-fil-a', 'chickfila', 'chipotle', 'panera',
+                'domino', 'papa john', 'little caesar', 'dairy queen', 'dq #', 'kfc', 'taco bell',
+                'a&w', 'harveys', 'swiss chalet', 'boston pizza', 'earls', 'joeys', 'cactus club',
+                'moxies', 'milestones', 'the keg', 'montanas', 'kelsey', 'east side mario',
+                'red lobster', 'olive garden', 'denny', 'ihop', 'waffle house', "tim's", 'second cup',
+                'coffee', 'cafe', 'bistro', 'grill', 'kitchen', 'eatery', 'tavern', 'pub', 'bar & grill'
+            ],
+            'Transport': [
+                'gas', 'shell', 'esso', 'petro canada', 'petrocan', 'canadian tire gas', 'pioneer',
+                'mobil', 'chevron', 'sunoco', 'husky', 'co-op gas', 'costco gas',
+                'uber', 'lyft', 'taxi', 'cab', 'transit', 'presto', 'compass', 'ttc', 'stm',
+                'octranspo', 'oc transpo', 'translink', 'go transit', 'via rail', 'greyhound',
+                'parking', 'impark', 'indigo parking', 'green p', 'park mobile', 'honk mobile',
+                'enterprise', 'hertz', 'avis', 'budget car', 'national car', 'uhaul', 'u-haul'
+            ],
+            'Shopping': [
+                'amazon', 'amzn', 'amz*', 'best buy', 'bestbuy', 'walmart', 'target', 'ebay', 'etsy',
+                'aliexpress', 'wish.com', 'shein', 'costco', 'canadian tire', 'cdn tire',
+                'home depot', 'homedepot', 'lowes', "lowe's", 'rona', 'home hardware', 'ikea',
+                'wayfair', 'structube', 'the brick', "leon's", 'winners', 'marshalls', 'homesense',
+                'dollarama', 'dollar tree', 'giant tiger', 'shoppers drug', 'pharmaprix', 'rexall',
+                'london drugs', 'staples', 'bureau en gros', 'indigo', 'chapters', 'apple store',
+                'microsoft store', 'sport chek', 'sportchek', 'footlocker', 'nike', 'adidas',
+                'lululemon', 'old navy', 'gap', 'h&m', 'zara', 'uniqlo', 'simons', 'hudson bay',
+                'hbc', 'nordstrom', 'sephora', 'bath & body', 'bed bath', 'pottery barn',
+                'crate & barrel', 'williams sonoma', 'mec', 'atmosphere', 'sail', 'cabelas',
+                'bass pro', 'petsmart', 'pet valu', 'global pet'
+            ],
+            'Entertainment': [
+                'netflix', 'nflx', 'nf *', 'spotify', 'disney', 'disney+', 'disneyplus',
+                'apple music', 'apple tv', 'appletv', 'amazon prime', 'prime video', 'hulu', 'hbo',
+                'crave', 'paramount+', 'paramount plus', 'peacock', 'youtube premium', 'youtubepremium',
+                'audible', 'kindle', 'xbox', 'playstation', 'psn', 'nintendo', 'steam', 'epic games',
+                'twitch', 'gaming', 'cinema', 'cineplex', 'cinemas', 'movie', 'theatre', 'theater',
+                'ticketmaster', 'stubhub', 'vivid seats', 'livenation', 'concert', 'show', 'event',
+                'amc', 'regal', 'landmark cinema', 'dropbox', 'icloud', 'google storage', 'google one',
+                'adobe', 'creative cloud', 'canva', 'microsoft 365', 'office 365', 'zoom',
+                'slack premium', 'github', 'openai', 'chatgpt', 'midjourney', 'claude', 'anthropic'
+            ],
+            'Utilities': [
+                'hydro', 'electric', 'electricity', 'power', 'energy', 'enbridge', 'gas bill',
+                'water bill', 'utilities', 'rogers', 'bell', 'telus', 'fido', 'koodo',
+                'virgin mobile', 'freedom mobile', 'chatr', 'lucky mobile', 'public mobile',
+                'videotron', 'sasktel', 'mts', 'tbaytel', 'eastlink', 'shaw', 'cogeco',
+                'teksavvy', 'start.ca', 'beanfield', 'internet', 'wifi', 'cable', 'home phone',
+                'mobile', 'wireless', 'cell phone', 'tenant insurance', 'home insurance',
+                'car insurance', 'auto insurance', 'life insurance', 'sun life', 'manulife',
+                'canada life', 'great west', 'desjardins', 'intact', 'td insurance', 'rbc insurance',
+                'aviva', 'allstate', 'state farm'
+            ]
         };
+
+        // Clean description for better matching
+        function cleanDescription(desc) {
+            return desc
+                .toUpperCase()
+                .replace(/[*#@!$%^&()_+=\[\]{}|\\:";'<>?,./~`]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        // Smart categorization function
+        function categorizeTransaction(description, amount) {
+            const cleanedDesc = cleanDescription(description);
+            const lowerDesc = cleanedDesc.toLowerCase();
+            
+            // Check for income first - positive amounts or income keywords
+            if (amount > 0) {
+                // Check if it matches income keywords
+                for (const keyword of categoryRules['Income']) {
+                    if (lowerDesc.includes(keyword.toLowerCase())) {
+                        return 'Income';
+                    }
+                }
+                // Positive amount but no income keyword - still try to categorize by description
+                // Fall through to check other categories
+            }
+            
+            // Check income keywords even for non-positive amounts (some refunds might be coded weirdly)
+            for (const keyword of categoryRules['Income']) {
+                if (lowerDesc.includes(keyword.toLowerCase())) {
+                    return 'Income';
+                }
+            }
+            
+            // Check other categories in order (more specific categories first)
+            const categoryOrder = ['Transfer', 'Housing', 'Health', 'Groceries', 'Dining', 'Transport', 'Shopping', 'Entertainment', 'Utilities'];
+            
+            for (const category of categoryOrder) {
+                const keywords = categoryRules[category];
+                for (const keyword of keywords) {
+                    if (lowerDesc.includes(keyword.toLowerCase())) {
+                        return category;
+                    }
+                }
+            }
+            
+            // Default to Other
+            return 'Other';
+        }
 
         // Column name mappings
         const dateColumns = ['date', 'transaction date', 'trans date', 'posted date', 'post date', 'trans_date', 'transaction_date'];
@@ -1187,25 +1319,6 @@
                 }
             }
             return null;
-        }
-
-        function categorizeTransaction(description, amount) {
-            const desc = description.toLowerCase();
-            
-            if (amount > 0) {
-                for (const keyword of categoryRules['Income']) {
-                    if (desc.includes(keyword)) return 'Income';
-                }
-                return 'Income';
-            }
-
-            for (const [category, keywords] of Object.entries(categoryRules)) {
-                if (category === 'Income') continue;
-                for (const keyword of keywords) {
-                    if (desc.includes(keyword)) return category;
-                }
-            }
-            return 'Other';
         }
 
         function renderDashboard() {
