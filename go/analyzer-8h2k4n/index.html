@@ -545,6 +545,169 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Instructions Section */
+        .instructions-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .instructions-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .instructions-toggle:hover {
+            border-color: var(--accent);
+        }
+
+        .instructions-toggle h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .instructions-toggle h3 svg {
+            width: 20px;
+            height: 20px;
+            color: var(--accent);
+        }
+
+        .instructions-toggle .chevron {
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+            transition: transform 0.2s;
+        }
+
+        .instructions-toggle.open .chevron {
+            transform: rotate(180deg);
+        }
+
+        .instructions-content {
+            display: none;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            padding: 1.5rem;
+            margin-top: -12px;
+        }
+
+        .instructions-content.show {
+            display: block;
+            animation: slideDown 0.2s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .instructions-toggle.open {
+            border-radius: 12px 12px 0 0;
+        }
+
+        .instruction-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .instruction-step {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-radius: 50%;
+            font-size: 0.875rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .instruction-step h4 {
+            font-size: 0.938rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .instruction-step p {
+            font-size: 0.813rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .supported-formats {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .supported-formats h4 {
+            font-size: 0.813rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .supported-formats p {
+            font-size: 0.813rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .sample-data-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .sample-data-link:hover {
+            opacity: 0.8;
+        }
+
+        .sample-data-link svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .instruction-steps {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -567,6 +730,52 @@
                 Clear Data
             </button>
         </header>
+
+        <!-- INSTRUCTIONS SECTION -->
+        <div class="instructions-section" id="instructionsSection">
+            <button class="instructions-toggle open" id="instructionsToggle" onclick="toggleInstructions()">
+                <h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    How to Use
+                </h3>
+                <svg class="chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div class="instructions-content show" id="instructionsContent">
+                <div class="instruction-steps">
+                    <div class="instruction-step">
+                        <span class="step-number">1</span>
+                        <h4>Export your transactions</h4>
+                        <p>Download a CSV or Excel file from your bank, credit card, or budgeting app. Most banks have an "Export" or "Download" option in transaction history.</p>
+                    </div>
+                    <div class="instruction-step">
+                        <span class="step-number">2</span>
+                        <h4>Upload your file</h4>
+                        <p>Drag and drop your file into the upload zone below, or click to browse. Supports .csv, .xlsx, and .xls files.</p>
+                    </div>
+                    <div class="instruction-step">
+                        <span class="step-number">3</span>
+                        <h4>Get instant insights</h4>
+                        <p>See your spending broken down by category, view monthly trends, and discover your top merchants. All processing happens locally — your data stays private.</p>
+                    </div>
+                </div>
+                <div class="supported-formats">
+                    <h4>Supported Formats</h4>
+                    <p>Your file should have columns for Date, Description, and Amount.</p>
+                    <p>Column names can vary (e.g., "Transaction Date", "Memo", "Debit/Credit") — we'll detect them automatically.</p>
+                </div>
+                <button class="sample-data-link" onclick="loadSampleData()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Try with sample data to see how it works
+                </button>
+            </div>
+        </div>
 
         <!-- UPLOAD ZONE -->
         <div class="upload-zone" id="uploadZone">
@@ -700,6 +909,86 @@
         const debitColumns = ['debit', 'withdrawal', 'expense', 'out', 'payment'];
         const creditColumns = ['credit', 'deposit', 'income', 'in'];
 
+        // Toggle instructions section
+        function toggleInstructions() {
+            const toggle = document.getElementById('instructionsToggle');
+            const content = document.getElementById('instructionsContent');
+            toggle.classList.toggle('open');
+            content.classList.toggle('show');
+        }
+
+        // Sample data for demo
+        function loadSampleData() {
+            const sampleTransactions = [
+                // October 2025
+                { date: new Date('2025-10-01'), description: 'Payroll Direct Deposit', amount: 3200.00, category: 'Income' },
+                { date: new Date('2025-10-02'), description: 'Loblaws Grocery Store', amount: -127.45, category: 'Groceries' },
+                { date: new Date('2025-10-03'), description: 'Netflix Monthly', amount: -15.99, category: 'Entertainment' },
+                { date: new Date('2025-10-04'), description: 'Shell Gas Station', amount: -58.23, category: 'Transport' },
+                { date: new Date('2025-10-05'), description: 'Tim Hortons', amount: -8.45, category: 'Dining' },
+                { date: new Date('2025-10-07'), description: 'Amazon.ca Purchase', amount: -67.89, category: 'Shopping' },
+                { date: new Date('2025-10-09'), description: 'Rogers Internet', amount: -89.99, category: 'Utilities' },
+                { date: new Date('2025-10-11'), description: 'Starbucks Coffee', amount: -6.75, category: 'Dining' },
+                { date: new Date('2025-10-12'), description: 'Costco Wholesale', amount: -234.56, category: 'Groceries' },
+                { date: new Date('2025-10-14'), description: 'Uber Trip', amount: -18.50, category: 'Transport' },
+                { date: new Date('2025-10-15'), description: 'Payroll Direct Deposit', amount: 3200.00, category: 'Income' },
+                { date: new Date('2025-10-16'), description: 'Hydro One Electric', amount: -142.33, category: 'Utilities' },
+                { date: new Date('2025-10-18'), description: 'Swiss Chalet Restaurant', amount: -45.67, category: 'Dining' },
+                { date: new Date('2025-10-19'), description: 'Spotify Premium', amount: -11.99, category: 'Entertainment' },
+                { date: new Date('2025-10-21'), description: 'No Frills Grocery', amount: -89.23, category: 'Groceries' },
+                { date: new Date('2025-10-23'), description: 'Canadian Tire', amount: -56.78, category: 'Shopping' },
+                { date: new Date('2025-10-25'), description: 'McDonalds', amount: -12.34, category: 'Dining' },
+                { date: new Date('2025-10-27'), description: 'Petro Canada Gas', amount: -62.45, category: 'Transport' },
+                { date: new Date('2025-10-29'), description: 'Bell Mobility', amount: -75.00, category: 'Utilities' },
+                { date: new Date('2025-10-30'), description: 'E-Transfer to John', amount: -50.00, category: 'Transfer' },
+                
+                // November 2025
+                { date: new Date('2025-11-01'), description: 'Payroll Direct Deposit', amount: 3200.00, category: 'Income' },
+                { date: new Date('2025-11-02'), description: 'Metro Grocery', amount: -112.34, category: 'Groceries' },
+                { date: new Date('2025-11-03'), description: 'Netflix Monthly', amount: -15.99, category: 'Entertainment' },
+                { date: new Date('2025-11-04'), description: 'Esso Gas', amount: -55.67, category: 'Transport' },
+                { date: new Date('2025-11-06'), description: 'Uber Eats Order', amount: -34.56, category: 'Dining' },
+                { date: new Date('2025-11-08'), description: 'Amazon.ca Purchase', amount: -123.45, category: 'Shopping' },
+                { date: new Date('2025-11-10'), description: 'Loblaws Grocery', amount: -145.67, category: 'Groceries' },
+                { date: new Date('2025-11-11'), description: 'Tim Hortons', amount: -7.89, category: 'Dining' },
+                { date: new Date('2025-11-13'), description: 'Goodlife Fitness', amount: -49.99, category: 'Entertainment' },
+                { date: new Date('2025-11-15'), description: 'Payroll Direct Deposit', amount: 3200.00, category: 'Income' },
+                { date: new Date('2025-11-16'), description: 'Enbridge Gas', amount: -98.45, category: 'Utilities' },
+                { date: new Date('2025-11-17'), description: 'Cineplex Movies', amount: -28.50, category: 'Entertainment' },
+                { date: new Date('2025-11-19'), description: 'Spotify Premium', amount: -11.99, category: 'Entertainment' },
+                { date: new Date('2025-11-20'), description: 'Boston Pizza', amount: -52.34, category: 'Dining' },
+                { date: new Date('2025-11-22'), description: 'Costco Gas', amount: -48.90, category: 'Transport' },
+                { date: new Date('2025-11-24'), description: 'Winners Store', amount: -78.45, category: 'Shopping' },
+                { date: new Date('2025-11-26'), description: 'Food Basics Grocery', amount: -67.89, category: 'Groceries' },
+                { date: new Date('2025-11-28'), description: 'Rogers Internet', amount: -89.99, category: 'Utilities' },
+                { date: new Date('2025-11-29'), description: 'Interest Payment', amount: 12.34, category: 'Income' },
+                { date: new Date('2025-11-30'), description: 'Starbucks', amount: -9.45, category: 'Dining' },
+                
+                // December 2025
+                { date: new Date('2025-12-01'), description: 'Payroll Direct Deposit', amount: 3200.00, category: 'Income' },
+                { date: new Date('2025-12-02'), description: 'Sobeys Grocery', amount: -156.78, category: 'Groceries' },
+                { date: new Date('2025-12-03'), description: 'Netflix Monthly', amount: -15.99, category: 'Entertainment' },
+                { date: new Date('2025-12-04'), description: 'Shell Gas Station', amount: -61.23, category: 'Transport' },
+                { date: new Date('2025-12-05'), description: 'Skip The Dishes', amount: -42.34, category: 'Dining' },
+                { date: new Date('2025-12-07'), description: 'Best Buy Electronics', amount: -199.99, category: 'Shopping' },
+                { date: new Date('2025-12-08'), description: 'Hydro One Electric', amount: -158.67, category: 'Utilities' },
+                { date: new Date('2025-12-09'), description: 'Tim Hortons', amount: -11.23, category: 'Dining' },
+                { date: new Date('2025-12-10'), description: 'Amazon.ca Holiday Shopping', amount: -287.45, category: 'Shopping' },
+                { date: new Date('2025-12-11'), description: 'Loblaws Grocery', amount: -189.34, category: 'Groceries' },
+                { date: new Date('2025-12-12'), description: 'Cashback Rebate', amount: 25.00, category: 'Income' },
+                { date: new Date('2025-12-13'), description: 'Uber Trip', amount: -22.45, category: 'Transport' }
+            ];
+
+            transactions = sampleTransactions;
+            
+            // Hide upload zone and instructions, show dashboard
+            document.getElementById('uploadZone').style.display = 'none';
+            document.getElementById('instructionsSection').style.display = 'none';
+            document.getElementById('clearBtn').classList.add('show');
+            
+            renderDashboard();
+        }
+
         // Upload zone drag and drop
         const uploadZone = document.getElementById('uploadZone');
         const fileInput = document.getElementById('fileInput');
@@ -736,6 +1025,7 @@
             const uploadZone = document.getElementById('uploadZone');
             
             uploadZone.style.display = 'none';
+            document.getElementById('instructionsSection').style.display = 'none';
             loading.classList.add('show');
 
             const reader = new FileReader();
@@ -1113,12 +1403,14 @@
             document.getElementById('dashboard').classList.remove('show');
             document.getElementById('clearBtn').classList.remove('show');
             document.getElementById('uploadZone').style.display = 'block';
+            document.getElementById('instructionsSection').style.display = 'block';
             document.getElementById('fileInput').value = '';
         }
 
         function resetUpload() {
             document.getElementById('loading').classList.remove('show');
             document.getElementById('uploadZone').style.display = 'block';
+            document.getElementById('instructionsSection').style.display = 'block';
             document.getElementById('fileInput').value = '';
         }
     </script>
