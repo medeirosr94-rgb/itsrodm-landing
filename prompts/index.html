@@ -162,6 +162,45 @@
             font-weight: 300;
         }
 
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 2rem 0 1rem;
+            animation: fadeInUp 0.8s ease-out 0.15s both;
+        }
+
+        .filter-tab {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+        }
+
+        .filter-tab.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .prompt-card.hidden {
+            display: none;
+        }
+
         /* Prompts Grid */
         .prompts-grid {
             display: grid;
@@ -357,9 +396,16 @@
             <p class="subtitle">Copy-paste prompts to transform how you use AI. New prompts added regularly.</p>
         </header>
 
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">All</button>
+            <button class="filter-tab" data-filter="finance">Finance</button>
+            <button class="filter-tab" data-filter="agent-mode">Agent Mode</button>
+            <button class="filter-tab" data-filter="life-planning">Life Planning</button>
+        </div>
+
         <div class="prompts-grid">
             <!-- Life Coach 2026 Prompt Card -->
-            <div class="prompt-card">
+            <div class="prompt-card" data-category="life-planning">
                 <span class="prompt-card-badge life-planning">Life Planning</span>
                 <h3>Your 2026 Life Coach Prompt</h3>
                 <p>Turn ChatGPT into a personal life strategist that builds you a complete 12-month roadmap.</p>
@@ -372,7 +418,7 @@
             </div>
 
             <!-- Promo Code Finder Prompt Card -->
-            <div class="prompt-card">
+            <div class="prompt-card" data-category="agent-mode">
                 <span class="prompt-card-badge agent-mode">Agent Mode</span>
                 <h3>Promo Code Finder Agent</h3>
                 <p>Let AI hunt down working promo codes by actually testing them at checkout. Only get codes that work.</p>
@@ -385,7 +431,7 @@
             </div>
 
             <!-- Expense Categorizer Prompt Card -->
-            <div class="prompt-card">
+            <div class="prompt-card" data-category="finance">
                 <span class="prompt-card-badge finance">Finance</span>
                 <h3>Expense Categorizer</h3>
                 <p>Upload your transactions and get a clean breakdown of your monthly spending organized by category.</p>
@@ -398,7 +444,7 @@
             </div>
 
             <!-- Emergency Fund Coach Prompt Card -->
-            <div class="prompt-card">
+            <div class="prompt-card" data-category="finance">
                 <span class="prompt-card-badge finance">Finance</span>
                 <h3>Emergency Fund Coach</h3>
                 <p>Get a personalized 6-month emergency fund plan with weekly milestones and spending tips.</p>
@@ -411,7 +457,7 @@
             </div>
 
             <!-- Emergency Fund Tracker Prompt Card -->
-            <div class="prompt-card">
+            <div class="prompt-card" data-category="finance">
                 <span class="prompt-card-badge finance">Finance</span>
                 <h3>Emergency Fund Tracker</h3>
                 <p>Generate a custom Google Sheets template to track your savings with charts and conditional formatting.</p>
@@ -452,5 +498,22 @@
             <p>© 2025 itsrodm. Making AI make sense.</p>
         </footer>
     </div>
+
+    <script>
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const filter = tab.dataset.filter;
+                document.querySelectorAll('.prompt-card').forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.classList.remove('hidden');
+                    } else if (!card.classList.contains('coming-soon')) {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
