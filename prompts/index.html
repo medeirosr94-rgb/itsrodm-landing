@@ -198,7 +198,11 @@
         }
 
         .prompt-card.hidden {
-            display: none;
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            position: absolute;
+            visibility: hidden;
         }
 
         /* Prompts Grid */
@@ -217,13 +221,36 @@
             padding: 1.75rem;
             display: flex;
             flex-direction: column;
-            transition: all 0.3s ease;
+            transition: all 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+            position: relative;
         }
 
         .prompt-card:hover {
             border-color: var(--accent);
             transform: translateY(-4px);
             box-shadow: 0 12px 40px var(--accent-dim);
+        }
+
+        /* New badge */
+        .new-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.625rem;
+            color: #fff;
+            background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+            animation: pulse-new 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-new {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
 
         .prompt-card-badge {
@@ -445,6 +472,7 @@
 
             <!-- Emergency Fund Coach Prompt Card -->
             <div class="prompt-card" data-category="finance">
+                <span class="new-badge">New</span>
                 <span class="prompt-card-badge finance">Finance</span>
                 <h3>Emergency Fund Coach</h3>
                 <p>Get a personalized 6-month emergency fund plan with weekly milestones and spending tips.</p>
@@ -458,6 +486,7 @@
 
             <!-- Emergency Fund Tracker Prompt Card -->
             <div class="prompt-card" data-category="finance">
+                <span class="new-badge">New</span>
                 <span class="prompt-card-badge finance">Finance</span>
                 <h3>Emergency Fund Tracker</h3>
                 <p>Generate a custom Google Sheets template to track your savings with charts and conditional formatting.</p>
