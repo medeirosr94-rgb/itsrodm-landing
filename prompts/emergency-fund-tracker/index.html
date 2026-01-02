@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Fund Tracker Prompt | itsrodm</title>
+    <meta name="description" content="Get a custom Google Sheets template to track your emergency fund progress with visual charts and conditional formatting.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #111113;
+            --bg-card: #18181b;
+            --accent: #00d4aa;
+            --accent-dim: #00d4aa22;
+            --accent-glow: #00d4aa44;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #52525b;
+            --border: #27272a;
+            --font-display: 'Outfit', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-display); background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; min-height: 100vh; overflow-x: hidden; }
+        .bg-grid { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 60px 60px; opacity: 0.3; z-index: 0; }
+        .bg-glow { position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 30%, var(--accent-glow) 0%, transparent 50%); animation: drift 20s ease-in-out infinite; z-index: 0; }
+        @keyframes drift { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(5%, 5%); } }
+        .container { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+        .nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; margin-bottom: 2rem; animation: fadeInUp 0.8s ease-out; }
+        .logo { font-family: var(--font-mono); font-size: 0.875rem; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+        .logo::before { content: ''; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
+        .nav-link { color: var(--text-secondary); text-decoration: none; font-size: 0.938rem; transition: color 0.2s ease; }
+        .nav-link:hover { color: var(--accent); }
+        header { text-align: center; padding: 2rem 0; animation: fadeInUp 0.8s ease-out; }
+        .badge { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); background: var(--accent-dim); padding: 0.375rem 0.75rem; border-radius: 100px; display: inline-block; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        h1 { font-size: clamp(2rem, 6vw, 2.75rem); font-weight: 700; line-height: 1.2; margin-bottom: 1rem; letter-spacing: -0.03em; }
+        h1 span { background: linear-gradient(135deg, var(--accent) 0%, #00ffcc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { font-size: 1.125rem; color: var(--text-secondary); max-width: 500px; margin: 0 auto; font-weight: 300; }
+        .prompt-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin: 2rem 0; animation: fadeInUp 0.8s ease-out 0.2s both; }
+        .prompt-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem; }
+        .prompt-label { font-family: var(--font-mono); font-size: 0.813rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+        .btn-copy { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; font-size: 0.875rem; font-weight: 600; font-family: var(--font-display); background: var(--accent); color: var(--bg-primary); border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; }
+        .btn-copy:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
+        .btn-copy.copied { background: #22c55e; }
+        .btn-copy svg { width: 16px; height: 16px; }
+        .prompt-box { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; font-family: var(--font-mono); font-size: 0.875rem; line-height: 1.8; color: var(--text-primary); white-space: pre-wrap; word-wrap: break-word; }
+        .how-to-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin: 2rem 0; animation: fadeInUp 0.8s ease-out 0.3s both; }
+        .how-to-section h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+        .how-to-section h2 svg { width: 24px; height: 24px; color: var(--accent); }
+        .steps-list { list-style: none; counter-reset: step-counter; }
+        .steps-list li { counter-increment: step-counter; position: relative; padding-left: 2.5rem; margin-bottom: 1rem; color: var(--text-secondary); }
+        .steps-list li::before { content: counter(step-counter); position: absolute; left: 0; top: 0; width: 1.75rem; height: 1.75rem; background: var(--accent-dim); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.813rem; font-weight: 600; }
+        .steps-list li:last-child { margin-bottom: 0; }
+        .cta-section { background: linear-gradient(135deg, var(--accent-dim) 0%, transparent 100%); border: 1px solid var(--accent); border-radius: 16px; padding: 2rem; margin: 2rem 0; text-align: center; animation: fadeInUp 0.8s ease-out 0.4s both; }
+        .cta-section h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .cta-section p { color: var(--text-secondary); margin-bottom: 1.5rem; }
+        .btn-cta { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 1rem 2rem; font-size: 1rem; font-weight: 600; font-family: var(--font-display); background: linear-gradient(135deg, var(--accent) 0%, #00ffcc 100%); color: var(--bg-primary); border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; text-decoration: none; }
+        .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
+        .btn-cta svg { width: 18px; height: 18px; }
+        footer { text-align: center; padding: 2rem 0; border-top: 1px solid var(--border); margin-top: 2rem; }
+        footer p { color: var(--text-muted); font-size: 0.813rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 600px) { .container { padding: 1.5rem 1rem; } .prompt-section, .how-to-section, .cta-section { padding: 1.5rem; } .prompt-box { padding: 1rem; font-size: 0.813rem; } }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+    <div class="container">
+        <nav class="nav">
+            <a href="/" class="logo">itsrodm</a>
+            <a href="/prompts/" class="nav-link">← All Prompts</a>
+        </nav>
+        <header>
+            <span class="badge">Finance Prompt</span>
+            <h1><span>Emergency Fund Tracker</span></h1>
+            <p class="subtitle">Get a custom Google Sheets template to visualize and track your emergency fund progress.</p>
+        </header>
+        <section class="prompt-section">
+            <div class="prompt-header">
+                <span class="prompt-label">The Prompt</span>
+                <button class="btn-copy" id="copyBtn" onclick="copyPrompt()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                    <span>Copy</span>
+                </button>
+            </div>
+            <div class="prompt-box" id="promptText">You are a spreadsheet expert helping me track my emergency fund progress. Before building my template, ask me:
+
+1. What is your total emergency fund goal?
+2. How much are you planning to save each week?
+3. Do you get paid weekly, bi-weekly, or monthly?
+4. Do you want to track by week or by paycheck?
+5. Would you like a section to log where the money came from (e.g., paycheck, side hustle, expense cuts)?
+
+Once you have my answers, create a Google Sheets template that includes:
+- A tracker matching my pay schedule with target vs. actual columns
+- Running total of savings
+- Progress percentage toward my goal
+- A simple chart to visualize my progress
+- Conditional formatting to show if I'm on track (green) or behind (red)
+- Any custom columns based on my preferences
+
+Format the output so I can copy and paste it directly into Google Sheets.</div>
+        </section>
+        <section class="how-to-section">
+            <h2><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>How to Use This</h2>
+            <ol class="steps-list">
+                <li>Copy the prompt and paste it into ChatGPT</li>
+                <li>Answer the questions about your savings goals and schedule</li>
+                <li>Copy the generated template into a new Google Sheet</li>
+                <li>Update your progress each pay period and watch your fund grow!</li>
+            </ol>
+        </section>
+        <section class="cta-section">
+            <h2>Want more prompts like this?</h2>
+            <p>Get The AI Starter Kit — a collection of prompts and tools to level up how you use AI.</p>
+            <a href="/#lead-magnet" class="btn-cta">Get The AI Starter Kit<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></a>
+        </section>
+        <footer><p>© 2025 itsrodm. <a href="/prompts/">More Free Prompts</a></p></footer>
+    </div>
+    <script>
+        function copyPrompt() {
+            const promptText = document.getElementById('promptText').innerText;
+            const copyBtn = document.getElementById('copyBtn');
+            navigator.clipboard.writeText(promptText).then(() => {
+                copyBtn.classList.add('copied');
+                copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg><span>Copied!</span>';
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                    copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg><span>Copy</span>';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
